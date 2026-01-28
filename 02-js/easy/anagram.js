@@ -7,16 +7,13 @@
   - `npm run test-anagram`
 */
 function isAnagram(str1, str2) {
-
   if (str1.length !== str2.length) {
-      return false;
+    return false;
   }
-
 
   function sortString(str) {
-      return str.toLowerCase().split('').sort().join('');
+    return str.toLowerCase().split("").sort().join("");
   }
-
 
   return sortString(str1) === sortString(str2);
 }

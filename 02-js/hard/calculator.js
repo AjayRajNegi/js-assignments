@@ -17,6 +17,77 @@
   - `npm run test-calculator`
 */
 
-class Calculator { }
+class Calculator {
+  constructor() {
+    this.result = 0;
+  }
+
+  add(num) {
+    this._validateNumber(num);
+    this.result += num;
+    return this;
+  }
+
+  subtract(num) {
+    this._validateNumber(num);
+    this.result -= num;
+    return this;
+  }
+
+  multiply(num) {
+    this._validateNumber(num);
+    this.result *= num;
+    return this;
+  }
+
+  divide(num) {
+    this._validateNumber(num);
+    if (num === 0) {
+      throw new Error("Division by zero is not allowed");
+    }
+    this.result /= num;
+    return this;
+  }
+
+  clear() {
+    this.result = 0;
+    return this;
+  }
+
+  getResult() {
+    return this.result;
+  }
+
+  calculate(expression) {
+    if (typeof expression !== "string") {
+      throw new Error("Expression must be a string");
+    }
+
+    const cleaned = expression.replace(/\s+/g, "");
+
+    if (!/^[0-9+\-*/().]+$/.test(cleaned)) {
+      throw new Error("Invalid characters in expression");
+    }
+
+    try {
+      const value = Function(`"use strict"; return (${cleaned})`)();
+
+      if (!Number.isFinite(value)) {
+        throw new Error("Invalid mathematical operation");
+      }
+
+      this.result = value;
+      return this.result;
+    } catch (err) {
+      throw new Error("Invalid expression");
+    }
+  }
+
+  _validateNumber(num) {
+    if (typeof num !== "number" || !Number.isFinite(num)) {
+      throw new Error("Invalid number");
+    }
+  }
+}
 
 module.exports = Calculator;
